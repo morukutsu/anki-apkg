@@ -7,7 +7,7 @@
   "author": "NdYAG <i@daix.me>",
   "license": "MIT",
   "scripts": {
-    "start": "tsc --outDir lib src/*.ts && cp src/typings.d.ts lib",
+    "start": "tsc --outDir lib src/index.ts src/sql.ts src/typings.d.ts && cpy src/typings.d.ts lib/",
     "prepublish": "npm run start"
   },
   "dependencies": {
@@ -16,5 +16,9 @@
     "better-sqlite3": "^4.1.0",
     "rimraf": "^2.6.2",
     "sha1": "^1.1.1"
+  },
+  "devDependencies": {
+    "cpy-cli": "^2.0.0",
+    "typescript": "^3.2.2"
   }
 }
