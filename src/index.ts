@@ -10,6 +10,7 @@ import {
 } from 'fs'
 import * as archiver from 'archiver'
 import * as tmp from 'tmp'
+import * as streams from 'memory-streams'
 
 import { initDatabase, insertCard } from './sql'
 
@@ -60,6 +61,30 @@ export class APKG {
     archive.finalize()
 
     archive.on('finish', err => {
+      // cleanup
+      this.db.close()
+      this.clean()
+    })
+  }
+
+  saveToBuffer(callback: Function) {
+    const writer = new streams.WritableStream()
+    const directory = this.dest
+    const archive = archiver('zip')
+    const mediaObj = this.mediaFiles.reduce((obj, file, idx) => {
+      obj[idx] = file
+      return obj
+    }, {})
+
+    writeFileSync(join(this.dest, 'media'), JSON.stringify(mediaObj))
+
+    archive.directory(directory, false)
+    archive.pipe(writer)
+    archive.finalize()
+
+    archive.on('finish', err => {
+      callback(writer.toBuffer())
+
       // cleanup
       this.db.close()
       this.clean()
