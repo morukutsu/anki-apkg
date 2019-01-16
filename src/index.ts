@@ -30,7 +30,7 @@ export class APKG {
     writeFileSync(join(this.dest, `${index}`), data)
   }
   save(destination: string) {
-    const directory = join(__dirname, this.config.name)
+    const directory = this.dest
     const archive = archiver('zip')
     const mediaObj = this.mediaFiles.reduce((obj, file, idx) => {
       obj[idx] = file
