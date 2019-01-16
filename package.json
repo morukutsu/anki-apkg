@@ -14,8 +14,8 @@
     "@types/node": "^9.4.6",
     "archiver": "^2.1.1",
     "better-sqlite3": "^4.1.0",
-    "rimraf": "^2.6.2",
-    "sha1": "^1.1.1"
+    "sha1": "^1.1.1",
+    "tmp": "0.0.33"
   },
   "devDependencies": {
     "cpy-cli": "^2.0.0",

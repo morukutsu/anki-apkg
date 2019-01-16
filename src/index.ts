@@ -2,8 +2,8 @@ import * as Database from 'better-sqlite3'
 import { join } from 'path'
 import { initDatabase, insertCard } from './sql'
 import { writeFileSync, mkdirSync, rmdirSync, createWriteStream } from 'fs'
-import * as rimraf from 'rimraf'
 import * as archiver from 'archiver'
+import * as tmp from 'tmp'
 
 export class APKG {
   private db: any
@@ -11,9 +11,8 @@ export class APKG {
   private dest: string
   private mediaFiles: Array<string>
   constructor(private config: DeckConfig) {
-    this.dest = join(__dirname, config.name)
-    this.clean()
-    mkdirSync(this.dest)
+    const tmpobj = tmp.dirSync()
+    this.dest = tmpobj.name
     this.db = new Database(join(this.dest, 'collection.anki2'))
     this.deck = {
       ...config,
@@ -43,9 +42,5 @@ export class APKG {
       createWriteStream(join(destination, `${this.config.name}.apkg`))
     )
     archive.finalize()
-    archive.on('end', this.clean.bind(this))
-  }
-  private clean() {
-    rimraf(this.dest, () => {})
   }
 }
