@@ -52,15 +52,18 @@ export class APKG {
     }, {})
 
     writeFileSync(join(this.dest, 'media'), JSON.stringify(mediaObj))
+
     archive.directory(directory, false)
     archive.pipe(
       createWriteStream(join(destination, `${this.config.name}.apkg`))
     )
     archive.finalize()
 
-    // cleanup
-    this.db.close()
-    this.clean()
+    archive.on('finish', err => {
+      // cleanup
+      this.db.close()
+      this.clean()
+    })
   }
 
   clean() {
