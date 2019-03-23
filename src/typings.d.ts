@@ -12,6 +12,7 @@ interface DeckConfig {
 }
 
 interface Card {
+  id?: number,
   timestamp?: number,
   content: Array<string>
 }
