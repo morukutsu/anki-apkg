@@ -8,16 +8,19 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc --outDir lib src/index.ts src/sql.ts src/typings.d.ts && cpy src/typings.d.ts lib/",
-    "prepublish": "npm run start"
+    "prepublish": "npm run start",
+    "watch": "tsc -w"
   },
   "dependencies": {
     "@types/node": "^9.4.6",
     "archiver": "^2.1.1",
     "better-sqlite3": "^4.1.0",
+    "cpy-cli": "^2.0.0",
     "memory-streams": "^0.1.3",
     "sha1": "^1.1.1",
-    "tmp": "0.0.33",
-    "cpy-cli": "^2.0.0",
-    "typescript": "^3.2.2"
+    "tmp": "0.0.33"
+  },
+  "devDependencies": {
+    "typescript": "^3.3.4000"
   }
 }
