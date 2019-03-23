@@ -1,4 +1,4 @@
-import * as Database from 'better-sqlite3'
+import sqlite3 from 'sqlite3'
 import { join } from 'path'
 import {
   writeFileSync,
@@ -24,7 +24,7 @@ export class APKG {
   constructor(private config: DeckConfig) {
     this.tmpobj = tmp.dirSync()
     this.dest = this.tmpobj.name
-    this.db = new Database(join(this.dest, 'collection.anki2'))
+    this.db = new sqlite3.Database(join(this.dest, 'collection.anki2'))
     this.deck = {
       ...config,
       id: +new Date()
