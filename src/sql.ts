@@ -203,16 +203,15 @@ COMMIT;
 }
 
 export function insertCard(database: any, deck: DeckConfig, card: Card) {
-    const createTime = card.id || +new Date()
-    const cardId = createTime
-    const noteId = cardId
+    const cardId = card.id
+    const noteId = cardId + 1
     const modelId = deck.id + 1
     const fieldsContent = card.content.join('\u001F')
     const sortField = card.content[0]
 
     database.serialize(() => {
         const SQL_CARD = `INSERT INTO cards (id,nid,did,ord,mod,usn,type,queue,due,ivl,factor,reps,lapses,left,odue,odid,flags,data) VALUES (?,  ?,  ?,  0,  ?,  -1,  0,  0,  86400,0,0,0,0,0,0,0,0,'')`
-        database.run(SQL_CARD, [cardId, noteId, deck.id, createTime], (err) => {
+        database.run(SQL_CARD, [cardId, noteId, deck.id, 0], (err) => {
             if (err) {
                 console.log("database.run(SQL_CARD", err)
             }
@@ -224,10 +223,10 @@ export function insertCard(database: any, deck: DeckConfig, card: Card) {
                 [noteId,
                     `${cardId}`,
                     modelId,
-                    createTime,
+                    0,
                     fieldsContent,
                     sortField,
-                    parseInt(sha1(fieldsContent).substr(0, 8), 16)],
+                    parseInt(sha1(sortField).substr(0, 8), 16)],
                 (err) => {
                     if (err) {
                         console.log("database.run(SQL_NOTE", err)
